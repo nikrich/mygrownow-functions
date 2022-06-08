@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const Instagram = require("./modules/instagram");
+const Instagram = require("instagram-web-api");
 admin.initializeApp();
 
 exports.createImage = functions.firestore
@@ -41,8 +41,11 @@ exports.postToInstagram = functions.firestore
       username: "mygrownow",
       password: "jX2%6Xs4^*9484UR",
     });
-
-    await client.login();
+    try {
+      await client.login();
+    } catch (ex) {
+      console.log("nothing to see here, move along");
+    }
 
     const { media } = await client.uploadPhoto({
       photo: createdDoc.url,
