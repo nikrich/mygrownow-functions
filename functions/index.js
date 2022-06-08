@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const Instagram = require("./modules/instagram");
 admin.initializeApp();
 
 exports.createImage = functions.firestore
@@ -18,4 +19,36 @@ exports.createImage = functions.firestore
       .firestore()
       .doc("entries/" + createdDoc.entryId)
       .set(entryObject);
+  });
+
+exports.postToInstagram = functions.firestore
+  .document("images/{imageId}")
+  .onCreate(async (snap, context) => {
+    const createdDoc = snap.data();
+    const date = new Date();
+    var FIVE_MIN = 5 * 60 * 1000;
+    const postDate = new Date();
+    postDate.setHours(10, 0, 0);
+    const diff = Math.abs(date - new Date(postDate));
+    console.log(diff);
+
+    if (diff > FIVE_MIN) {
+      console.log("Not posting now - but will do at 4:20");
+      return;
+    }
+
+    const client = new Instagram({
+      username: "mygrownow",
+      password: "jX2%6Xs4^*9484UR",
+    });
+
+    await client.login();
+
+    const { media } = await client.uploadPhoto({
+      photo: createdDoc.url,
+      caption: `Grow Update - ${date.toDateString()} #weed #marijuana #homegrown #indoor #closetgrow`,
+      post: "feed",
+    });
+
+    console.log(`https://www.instagram.com/p/${media.code}/`);
   });
