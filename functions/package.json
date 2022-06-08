@@ -16,9 +16,7 @@
   "dependencies": {
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.6",
-    "request-promise-native": "^1.0.9",
+    "instagram-web-api": "^2.2.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
