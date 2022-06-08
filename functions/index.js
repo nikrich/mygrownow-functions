@@ -23,7 +23,7 @@ exports.createImage = functions.firestore
 
 exports.postToInstagram = functions.firestore
   .document("images/{imageId}")
-  .onCreate((snap, context) => {
+  .onCreate(async (snap, context) => {
     const createdDoc = snap.data();
     const date = new Date();
     var FIVE_MIN = 5 * 60 * 1000;
@@ -42,11 +42,13 @@ exports.postToInstagram = functions.firestore
       password: "jX2%6Xs4^*9484UR",
     });
 
-    client.login().then(() => {
-      client.uploadPhoto({
-        photo: createdDoc.url,
-        caption: `Grow Update - ${date.toDateString()} #weed #marijuana #homegrown #indoor #closetgrow`,
-        post: "feed",
-      });
+    await client.login();
+
+    const { media } = await client.uploadPhoto({
+      photo: createdDoc.url,
+      caption: `Grow Update - ${date.toDateString()} #weed #marijuana #homegrown #indoor #closetgrow`,
+      post: "feed",
     });
+
+    console.log(`https://www.instagram.com/p/${media.code}/`);
   });
