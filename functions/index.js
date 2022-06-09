@@ -29,9 +29,9 @@ exports.postToInstagram = functions.firestore
     const date = new Date();
     var FIVE_MIN = 5 * 60 * 1000;
     const postDate = new Date();
-    postDate.setHours(16, 35, 0);
+    postDate.setHours(14, 50, 0);
     const diff = Math.abs(date - new Date(postDate));
-    console.log(diff);
+    console.log(diff / 60 / 1000);
 
     if (diff > FIVE_MIN) {
       console.log("Not posting now - but will do at 4:20");
