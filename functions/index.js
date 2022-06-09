@@ -12,7 +12,7 @@ exports.createImage = functions.firestore
     var entryObject = {
       id: createdDoc.entryId,
       uid: createdDoc.uid,
-      date: new Date(),
+      date: createdDoc.date,
       photoUrl: createdDoc.url,
     };
 
