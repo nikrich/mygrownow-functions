@@ -31,6 +31,7 @@ exports.postToInstagram = functions.firestore
     const postDate = new Date();
     postDate.setHours(14, 50, 0);
     const diff = Math.abs(date - new Date(postDate));
+    console.log(`date: ${postDate}`);
     console.log(diff / 60 / 1000);
 
     if (diff > FIVE_MIN) {
