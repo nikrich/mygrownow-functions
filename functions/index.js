@@ -13,6 +13,7 @@ exports.createImage = functions.firestore
       id: createdDoc.entryId,
       uid: createdDoc.uid,
       date: new Date(),
+      photoUrl: createdDoc.url,
     };
 
     return admin
