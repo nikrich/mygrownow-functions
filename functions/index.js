@@ -5,7 +5,7 @@ admin.initializeApp();
 
 exports.createImage = functions.firestore
   .document("images/{imageId}")
-  .onCreate((snap, context) => {
+  .onCreate(async (snap, context) => {
     const createdDoc = snap.data();
 
     // Create entry item
@@ -15,6 +15,14 @@ exports.createImage = functions.firestore
       date: createdDoc.date,
       imageUrl: createdDoc.url,
     };
+
+    const entryRef = admin.firestore().collection('entries').doc(`${createdDoc.entryId}`);
+    const entrySnapshot = await entryRef.get();
+
+    // make sure entry is only created once
+    if (entrySnapshot.exists) {
+      return;
+    }
 
     return admin
       .firestore()
