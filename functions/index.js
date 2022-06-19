@@ -14,6 +14,7 @@ exports.createImage = functions.firestore
       uid: createdDoc.uid,
       date: createdDoc.date,
       imageUrl: createdDoc.url,
+      growId: createdDoc.growId
     };
 
     const entryRef = admin.firestore().collection('entries').doc(`${createdDoc.entryId}`);
