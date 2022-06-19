@@ -22,11 +22,16 @@ exports.createImage = functions.firestore
     const growRef = admin.firestore().collection('grows').doc(`${createdDoc.growId}`);
     const growSnapshot = await growRef.get();
 
+    console.log(growSnapshot.exists);
+
     // if exists - calculate day of growth
     if (growSnapshot.exists) {     
       const dayDiff = Math.abs(dateDiff.dayDiff(growSnapshot.data().startedOn.toDate(), createdDoc.date.toDate()));
+      console.log(dayDiff);
       entryObject["day"] = dayDiff;
     }
+
+    console.log(entryObject);
 
     const entryRef = admin.firestore().collection('entries').doc(`${createdDoc.entryId}`);
     const entrySnapshot = await entryRef.get();
