@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const Instagram = require("instagram-web-api");
+const dateDiff = require("./utils/date");
 admin.initializeApp();
 
 exports.createImage = functions.firestore
@@ -16,6 +17,16 @@ exports.createImage = functions.firestore
       imageUrl: createdDoc.url,
       growId: createdDoc.growId
     };
+
+    // get grow item
+    const growRef = admin.firestore().collection('grows').doc(`${createdDoc.growId}`);
+    const growSnapshot = await growRef.get();
+
+    // if exists - calculate day of growth
+    if (growSnapshot.exists) {     
+      const dayDiff = Math.abs(dateDiff.dayDiff(growSnapshot.data().startedOn.toDate(), createdDoc.date.toDate()));
+      entryObject["day"] = dayDiff;
+    }
 
     const entryRef = admin.firestore().collection('entries').doc(`${createdDoc.entryId}`);
     const entrySnapshot = await entryRef.get();
